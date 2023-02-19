@@ -1,0 +1,23 @@
+.select-field {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 18px;
+}
+
+.select-field label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 18px;
+    font-weight: 500;
+    font-size: #212121;
+
+}
+
+.select-field select {
+    background-color: #FFF;
+    box-shadow: 10px 10px 30px rgb(0 0 0 / 6%);
+    width: 100%;
+    border: none;
+    font-size: 18px;
+    padding: 24px;
+}

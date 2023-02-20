@@ -1,14 +1,15 @@
 import CollaboratorCard from '../CollaboratorCard';
 import './Team.css'
+import hexToRgba from 'hex-to-rgba';
 
 const Team = (props) => {
     return (
         (props.collaborators.length > 0) && 
         <section 
             className='team' 
-            style={ { backgroundColor: props.secondaryColor } }
+            style={ { backgroundColor: hexToRgba(props.color, 0.6) } }
         >
-            <h3 style={ { borderBottomColor: props.primaryColor } }>
+            <h3 style={ { borderBottomColor: props.color } }>
                 { props.team }
             </h3>
 
@@ -18,10 +19,10 @@ const Team = (props) => {
                         collaborator => 
                             <CollaboratorCard 
                                 key={ collaborator.name }
-                                name={ collaborator.name }
-                                position={ collaborator.position }
-                                image={ collaborator.image }
-                                headerCardColor={ props.primaryColor }
+                                collaborator={ collaborator }
+                                headerCardColor={ props.color }
+                                onDelete={ props.onDelete }
+                                onFavorite={ props.onFavorite }
                             />
                     )
                 }

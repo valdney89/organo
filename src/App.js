@@ -2,60 +2,107 @@ import { useState } from 'react';
 import Banner from './components/Banner/Banner';
 import CollaboratorForm from './components/CollaboratorForm';
 import Team from './components/Team';
+import { v4 as uuidv4 } from 'uuid';
 
 function App() {
 
-  const teamsData = [
+  const [teams, setTeam] = useState([
     { 
-      id: 1, 
+      id: uuidv4(), 
       name: 'Programação', 
-      primaryColor: '#57C278', 
-      secondaryColor: '#D9F7E9'
+      color: '#57C278', 
     },
     { 
-      id: 2, 
+      id: uuidv4(), 
       name: 'Front-end', 
-      primaryColor: '#82CFFA', 
-      secondaryColor: '#E8F8FF' 
+      color: '#82CFFA', 
     },
     { 
-      id: 3, 
+      id: uuidv4(), 
       name: 'Data Science', 
-      primaryColor: '#A6D157', 
-      secondaryColor: '#F0F8E2' 
+      color: '#A6D157',  
     },
     { 
-      id: 4, 
+      id: uuidv4(), 
       name: 'Devops',
-      primaryColor: '#E06B69', 
-      secondaryColor: '#FDE7E8' 
+      color: '#E06B69', 
     },
     { 
-      id: 5, 
+      id: uuidv4(), 
       name: 'Ux Design', 
-      primaryColor: '#D86EBF', 
-      secondaryColor: '#FAE5F5' 
+      color: '#D86EBF', 
     },
     { 
-      id: 6, 
+      id: uuidv4(), 
       name: 'Inovação e Gestão', 
-      primaryColor: '#FF8A29', 
-      secondaryColor: '#FFEEDF' 
+      color: '#FF8A29', 
     },
     { 
-      id: 7, 
+      id: uuidv4(), 
       name: 'Mobile', 
-      primaryColor: '#FEBA05', 
-      secondaryColor: '#FFF5D9' 
+      color: '#FEBA05',  
     }
-  ]
+  ])
 
-  const [collaborators, setCollaborator] = useState([])
+  const [collaborators, setCollaborator] = useState([
+    {
+      id: uuidv4(),
+      name: 'JULIANA AMOASEI',
+      position: 'Desenvolvedora de software e instrutora',
+      image: 'https://www.alura.com.br/assets/img/lideres/juliana-amoasei.1647533644.jpeg',
+      team: 'Programação',
+      favorite: false
+    },
+    {
+      id: uuidv4(),
+      name: 'VALDNEY NOGUEIRA',
+      position: 'Desenvolvedor Front-end',
+      image: 'https://github.com/valdney89.png',
+      team: 'Front-end',
+      favorite: true
+    },
+    {
+      id: uuidv4(),
+      name: 'DANIEL ARTINE',
+      position: 'Engenheiro de Software',
+      image: 'https://www.alura.com.br/assets/img/lideres/daniel-artine.1647533644.jpeg',
+      team: 'Front-end',
+      favorite: false
+    },
+    {
+      id: uuidv4(),
+      name: 'PAULO SILVEIRA',
+      position: 'CEO',
+      image: 'https://www.alura.com.br/assets/img/lideres/paulo-silveira.1647533644.jpeg',
+      team: 'Inovação e Gestão',
+      favorite: false
+    },
+  ])
 
-  const onNewCollaboratorAdded = (collaborator) => {
-    if(collaborator.team) {
-      setCollaborator([...collaborators, collaborator])
+  const addCollaborator = (newCollaborator) => {
+    if(newCollaborator.team) {
+      setCollaborator([...collaborators, newCollaborator])
     }
+  }
+  
+  const deleteCollaborator = (id) => {
+    setCollaborator(collaborators.filter(collaborator => collaborator.id !== id))
+  }
+
+  const createTeam = (newTeam) => {
+    setTeam([...teams, { ...newTeam, id: uuidv4() }])
+  }
+
+  const favorite = (id) => {
+    setCollaborator(collaborators.map(
+      collaborator => {
+        if(collaborator.id === id) {
+          collaborator.favorite = !collaborator.favorite
+        }
+
+        return collaborator;
+      }
+    ))
   }
 
   return (
@@ -63,25 +110,27 @@ function App() {
       <Banner />
 
       <CollaboratorForm 
+        onTeamSaved={ team => createTeam(team) }
         onCollaboratorSaved={ 
-          collaborator => onNewCollaboratorAdded(collaborator)
+          collaborator => addCollaborator(collaborator)
         }
-        teams={ teamsData }
+        teams={ teams }
       />
 
       { 
-        teamsData.map(
+        teams.map(
           team => 
             <Team 
               key={ team.id } 
               team={ team.name } 
-              primaryColor={ team.primaryColor }
-              secondaryColor={ team.secondaryColor }
+              color={ team.color }
               collaborators={ 
                 collaborators.filter(
                   collaborator => collaborator.team === team.name
                 )
               }
+              onDelete={ deleteCollaborator }
+              onFavorite={ favorite }
             />
         )
       }

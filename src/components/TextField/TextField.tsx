@@ -7,6 +7,7 @@ interface TextFieldProps {
     required?: boolean;
     placeholder: string;
     value: string;
+    type: 'text' | 'date' | 'number' | 'password' | 'email';
 }
 
 const TextField = ({
@@ -14,7 +15,8 @@ const TextField = ({
     label,
     required = false,
     placeholder,
-    value
+    value,
+    type = 'text'
 }: TextFieldProps) => {
 
     const onTyping = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,7 +27,7 @@ const TextField = ({
         <div className={styles.textField}>
             <label>{ label }</label>
             <input
-                type="text"
+                type={ type }
                 onChange={ onTyping }
                 required={ required }
                 placeholder={ placeholder }

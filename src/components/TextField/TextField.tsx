@@ -7,7 +7,7 @@ interface TextFieldProps {
     required?: boolean;
     placeholder: string;
     value: string;
-    type: 'text' | 'date' | 'number' | 'password' | 'email';
+    type?: 'text' | 'date' | 'number' | 'password' | 'email';
 }
 
 const TextField = ({

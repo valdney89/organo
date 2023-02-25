@@ -1,16 +1,30 @@
-import './CollaboratorForm.css'
+import styles from './CollaboratorForm.module.scss';
+import React from 'react';
 
 import { useState } from 'react'
 
 import TextField from "../TextField/TextField"
 import SelectField from '../SelectField'
 import Button from '../Button'
+import { Collaborator } from '../../shared/models/ICollaborator';
+import { ITeam } from '../../shared/models/ITeam';
+import { SelectOption } from '../../shared/models/ISelectOptions';
 
-const CollaboratorForm = (props) => {
+interface FormularioProps {
+    onCollaboratorSaved: (collaborator: Collaborator) => void;
+    onTeamSaved: (team: ITeam) => void;
+    teams: SelectOption[]
+}
 
-    const onSave = (event) => {
+const CollaboratorForm = ({
+    onCollaboratorSaved,
+    onTeamSaved,
+    teams
+}: FormularioProps) => {
+
+    const onSave = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        props.onCollaboratorSaved({
+        onCollaboratorSaved({
             name,
             position,
             image,
@@ -22,9 +36,9 @@ const CollaboratorForm = (props) => {
         setTeam('')
     }
 
-    const onSaveTeam = (event) => {
+    const onSaveTeam = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        props.onTeamSaved({
+        onTeamSaved({
             color: teamColor,
             name: teamName,
         })
@@ -41,34 +55,34 @@ const CollaboratorForm = (props) => {
     const [teamName, setTeamName] = useState('')
 
     return (
-        <section className='collaborator-form'>
+        <section className={styles.collaboratorForm}>
             <form onSubmit={ onSave }>
                 <h2>Preencha os dados para criar o card do colaborador.</h2>
                 <TextField 
                     label="Nome" 
-                    required={ true } 
+                    required
                     placeholder="Digite o nome..."
                     value={ name }
                     onTyped={ value => setName(value) }
                 />
                 <TextField 
                     label="Cargo" 
-                    required={ true } 
+                    required
                     placeholder="Digite o cargo..." 
                     value={ position }
                     onTyped={ value => setPosition(value) }
                 />
                 <TextField 
                     label="Imagem" 
-                    required={ true } 
+                    required
                     placeholder="Informe o endereço da imagem..." 
                     value={ image }
                     onTyped={ value => setImage(value) }
                 />
                 <SelectField 
                     label="Time" 
-                    required={ true } 
-                    items={ props.teams }
+                    required
+                    items={ teams }
                     value={ team }
                     onSelected={ value => setTeam(value) } 
                 />

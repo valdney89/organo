@@ -1,12 +1,16 @@
 import { useState } from 'react';
+import React from 'react';
 import Banner from './components/Banner/Banner';
 import CollaboratorForm from './components/CollaboratorForm';
 import Team from './components/Team';
 import { v4 as uuidv4 } from 'uuid';
+import { Collaborator } from './shared/models/ICollaborator';
+import { ITeam } from './shared/models/ITeam';
+import { SelectOption } from './shared/models/ISelectOptions';
 
 function App() {
 
-  const [teams, setTeam] = useState([
+  const [teams, setTeam] = useState<ITeam[]>([
     { 
       id: uuidv4(), 
       name: 'Programação', 
@@ -44,7 +48,7 @@ function App() {
     }
   ])
 
-  const [collaborators, setCollaborator] = useState([
+  const [collaborators, setCollaborator] = useState<Collaborator[]>([
     {
       id: uuidv4(),
       name: 'JULIANA AMOASEI',
@@ -79,21 +83,25 @@ function App() {
     },
   ])
 
-  const addCollaborator = (newCollaborator) => {
+  const addCollaborator = (newCollaborator: Collaborator) => {
     if(newCollaborator.team) {
       setCollaborator([...collaborators, newCollaborator])
     }
   }
   
-  const deleteCollaborator = (id) => {
+  const deleteCollaborator = (id: string | undefined) => {
+    if(!id) { return; }
+    
     setCollaborator(collaborators.filter(collaborator => collaborator.id !== id))
   }
 
-  const createTeam = (newTeam) => {
+  const createTeam = (newTeam: ITeam) => {
     setTeam([...teams, { ...newTeam, id: uuidv4() }])
   }
 
-  const favorite = (id) => {
+  const favorite = (id: string | undefined) => {
+    if(!id) { return; }
+
     setCollaborator(collaborators.map(
       collaborator => {
         if(collaborator.id === id) {
@@ -107,14 +115,17 @@ function App() {
 
   return (
     <div className="App">
-      <Banner />
+      <Banner 
+        url="/images/banner.png"
+        alt="Banner mostrando um time dando as mãos"
+      />
 
       <CollaboratorForm 
         onTeamSaved={ team => createTeam(team) }
         onCollaboratorSaved={ 
           collaborator => addCollaborator(collaborator)
         }
-        teams={ teams }
+        teams={ teams as SelectOption[] }
       />
 
       { 
